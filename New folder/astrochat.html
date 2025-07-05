@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AstroChat - LLaMA 3 Chatbot</title>
+  <style>
+    body { font-family: Arial; background-color: #1a1a2e; color: white; padding: 20px; }
+    #chatbox { max-width: 600px; margin: auto; background: #16213e; padding: 20px; border-radius: 10px; }
+    .message { margin-bottom: 10px; }
+    .user { color: #00f2fe; }
+    .bot { color: #00ffab; }
+    input[type="text"] { width: 75%; padding: 8px; }
+    button { padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <h2>🪐 AstroChat with LLaMA 3</h2>
+    <div id="messages"></div>
+    <input type="text" id="userInput" placeholder="Ask me something about space...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <!-- ✅ Only ONE script tag -->
+  <script>
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chat = document.getElementById('messages');
+      chat.innerHTML += `<div class="message user"><strong>You:</strong> ${message}</div>`;
+      input.value = '';
+
+      fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const reply = data.reply || "⚠️ No reply from AI";
+        chat.innerHTML += `<div class="message bot"><strong>AstroBot:</strong> ${reply}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      })
+      .catch(error => {
+        chat.innerHTML += `<div class="message bot">❌ Error: ${error.message}</div>`;
+        console.error('Fetch error:', error);
+      });
+    }
+  </script>
+</body>
+</html>

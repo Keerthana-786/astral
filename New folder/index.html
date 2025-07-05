@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cosmic Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #000428, #004e92);
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 10px #0ff; }
+      50% { text-shadow: 0 0 20px #0ff; }
+    }
+
+    .main-button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #ffdd57;
+      border: none;
+      border-radius: 10px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #0ff;
+      transition: 0.3s;
+    }
+
+    .main-button:hover {
+      background-color: #ffe88a;
+    }
+
+    .corner-button {
+      position: absolute;
+      bottom: 20px;
+      padding: 10px 20px;
+      background-color: #12c2e9;
+      border: none;
+      border-radius: 8px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 5px #fff;
+      transition: 0.3s;
+    }
+
+    .corner-button:hover {
+      background-color: #0ff;
+    }
+
+    .left-corner { left: 20px; }
+    .right-corner { right: 20px; }
+
+    .hint {
+      position: absolute;
+      top: 40px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    #languageSelect {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 0.9rem;
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* AstroBot button */
+    #astrobot-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #0ff;
+      color: black;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #fff;
+      transition: 0.3s;
+    }
+
+    #astrobot-button:hover {
+      background-color: #7df9ff;
+    }
+  </style>
+
+  <script>
+    const translations = {
+      'en-US': {
+        label: 'English',
+        title: "✨ ON THIS DAY, BUT MAKE IT COSMIC ✨",
+        mainButton: "ON THIS DAY, BUT MAKE IT COSMIC 🚀",
+        funFacts: "🛰️ Fun Facts",
+        game: "🎮 Game",
+        hint: "💡 Double-click anywhere and say: \"open fun facts\", \"open game\", or \"open events\"",
+        commands: {
+          'open fun facts': 'funfacts.html',
+          'open game': 'game.html',
+          'open events': 'events.html'
+        }
+      },
+      'hi-IN': {
+        label: 'हिंदी',
+        title: "✨ आज के दिन का ब्रह्मांडीय संस्करण ✨",
+        mainButton: "आज के दिन का ब्रह्मांडीय संस्करण 🚀",
+        funFacts: "🛰️ मज़ेदार तथ्य",
+        game: "🎮 खेल",
+        hint: "💡 डबल-क्लिक करें और कहें: \"मज़ेदार तथ्य खोलो\", \"खेल खोलो\", या \"इवेंट्स खोलो\"",
+        commands: {
+          'मज़ेदार तथ्य खोलो': 'funfacts.html',
+          'खेल खोलो': 'game.html',
+          'इवेंट्स खोलो': 'events.html'
+        }
+      },
+      'ta-IN': {
+        label: 'தமிழ்',
+        title: "✨ இந்நாளில் நிகழ்ந்தது - விண்வெளி பதிப்பு ✨",
+        mainButton: "இந்நாளில் நிகழ்ந்தது - விண்வெளி பதிப்பு 🚀",
+        funFacts: "🛰️ சுவாரஸ்யமான தகவல்கள்",
+        game: "🎮 விளையாட்டு",
+        hint: "💡 எங்கும் இருமுறை கிளிக் செய்து கூறவும்: \"சுவாரஸ்யமான தகவல்கள் திற\", \"விளையாட்டு திற\", அல்லது \"நிகழ்வுகள் திற\"",
+        commands: {
+          'சுவாரஸ்யமான தகவல்கள் திற': 'funfacts.html',
+          'விளையாட்டு திற': 'game.html',
+          'நிகழ்வுகள் திற': 'events.html'
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+
+  <!-- 🌐 Language Selector -->
+  <select id="languageSelect">
+    <option value="en-US">🌐 English</option>
+    <option value="hi-IN">🌐 हिंदी</option>
+    <option value="ta-IN">🌐 தமிழ்</option>
+  </select>
+
+  <!-- 🤖 AstroBot button (link to new page) -->
+  <button id="astrobot-button" onclick="location.href='astrochat.html'">💬 AstroBot</button>
+
+  <!-- 💡 Hint text -->
+  <div id="hint" class="hint"></div>
+
+  <!-- 🎯 Page Title -->
+  <h1 id="title"></h1>
+
+  <!-- 🚀 Center Button -->
+  <button id="mainButton" class="main-button"></button>
+
+  <!-- 🎮 Navigation Buttons -->
+  <button id="funFactsButton" class="corner-button left-corner"></button>
+  <button id="gameButton" class="corner-button right-corner"></button>
+
+  <!-- 🧠 JavaScript Logic -->
+  <script>
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    let currentLang = 'en-US';
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      currentLang = lang;
+
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('mainButton').textContent = t.mainButton;
+      document.getElementById('funFactsButton').textContent = t.funFacts;
+      document.getElementById('gameButton').textContent = t.game;
+      document.getElementById('hint').textContent = t.hint;
+
+      if (recognition) recognition.lang = lang;
+    }
+
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+      applyLanguage(e.target.value);
+    });
+
+    document.getElementById('mainButton').addEventListener('click', () => location.href = 'events.html');
+    document.getElementById('funFactsButton').addEventListener('click', () => location.href = 'funfacts.html');
+    document.getElementById('gameButton').addEventListener('click', () => location.href = 'game.html');
+
+    if (!SpeechRecognition) {
+      alert("🚫 Speech recognition not supported in this browser.\nTry using Google Chrome.");
+    } else {
+      recognition = new SpeechRecognition();
+      recognition.lang = currentLang;
+
+      recognition.onresult = function(event) {
+        const command = event.results[0][0].transcript.toLowerCase().trim();
+        const cmds = translations[currentLang].commands;
+
+        if (cmds[command]) {
+          window.location.href = cmds[command];
+        } else {
+          alert("🤔 Command not recognized: " + command);
+        }
+      };
+
+      recognition.onerror = function(event) {
+        alert("🎤 Speech recognition error: " + event.error);
+      };
+
+      document.body.addEventListener('dblclick', () => {
+        try {
+          recognition.start();
+          alert("🎙️ Speak now in " + translations[currentLang].label);
+        } catch (err) {
+          console.error("Error starting recognition:", err);
+        }
+      });
+    }
+
+    applyLanguage(currentLang); // Initial load
+  </script>
+</body>
+</html>
